@@ -55,4 +55,18 @@ router.post('/login', asyncHandler(async (req, res) => {
   res.json({ token: createToken(user), user: publicUser(user) });
 }));
 
+router.post('/admin-login', asyncHandler(async (req, res) => {
+  const email = String(req.body.email || '').toLowerCase();
+  const password = req.body.password || '';
+
+  const user = await User.findOne({ email, role: 'admin' });
+  const passwordMatches = user && (await bcrypt.compare(password, user.password));
+
+  if (!passwordMatches) {
+    throw new HttpError(401, 'Invalid admin email or password');
+  }
+
+  res.json({ token: createToken(user), user: publicUser(user) });
+}));
+
 module.exports = router;

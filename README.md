@@ -40,6 +40,14 @@ public/                the website
 ## Admin login (created automatically)
 - Email: `admin@collegefest.com`
 - Password: `Admin@123`
+- Open **Admin Login** in the navigation and sign in with these credentials. Change this default password before deploying the site.
+
+## Add an event as an admin
+1. Sign in using **Admin Login**.
+2. Open **ADMIN** in the navigation and select **+ Add Event**.
+3. Enter the event details and select **Save**. The event will appear on the public Events page.
+
+Only accounts with the `admin` role can create, edit, or delete events.
 
 ## Payments
 - **Demo Payment**: always available, no money involved, full workflow.

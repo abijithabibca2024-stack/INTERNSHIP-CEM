@@ -26,6 +26,7 @@ function renderNav(page, param) {
     }
   } else {
     links.push({ key: 'login', label: 'LOGIN', href: '#/login' });
+    links.push({ key: 'admin-login', label: 'ADMIN LOGIN', href: '#/admin-login' });
   }
 
   let html = links
@@ -47,6 +48,7 @@ const pages = {
   events:   { render: renderEvents, after: filterEvents },
   event:    { render: renderEventDetails },
   login:    { render: renderLogin },
+  'admin-login': { render: renderAdminLogin },
   signup:   { render: renderSignup },
   register: { render: renderRegister, access: 'login', after: updateTeamAndSummary },
   success:  { render: renderSuccess },
@@ -77,7 +79,7 @@ async function route() {
   }
   if (page.access === 'admin' && (!state.user || state.user.role !== 'admin')) {
     showToast('Admin access only', true);
-    return navigate('#/login');
+    return navigate('#/admin-login');
   }
 
   const app = $('#app');
@@ -117,7 +119,6 @@ const actions = {
 
   'new-event':     () => openEventForm(),
   'edit-event':    (button) => openEventForm(button.dataset.id),
-  'save-event':    (button) => saveEvent(button.dataset.id),
   'delete-event':  (button) => deleteEvent(button.dataset.id),
   'close-modal':   () => closeModal(),
 };
@@ -138,7 +139,11 @@ document.addEventListener('submit', (event) => {
   const kind = event.target.dataset.form;
   if (kind) {
     event.preventDefault();
-    submitAuthForm(event.target, kind);
+    if (kind === 'event') {
+      saveEvent(event.target.dataset.eventId);
+    } else {
+      submitAuthForm(event.target, kind);
+    }
   }
 });
 

@@ -1,16 +1,16 @@
 // Admin dashboard: statistics, event management, and the registrations list.
 
 const EVENT_FORM_FIELDS = [
-  { key: 'name', label: 'Name' },
+  { key: 'name', label: 'Name', required: true },
   { key: 'description', label: 'Description' },
   { key: 'rules', label: 'Rules' },
-  { key: 'date', label: 'Date (YYYY-MM-DD)' },
-  { key: 'time', label: 'Time (HH:MM)' },
-  { key: 'venue', label: 'Venue' },
-  { key: 'teamSize', label: 'Max team size' },
-  { key: 'fee', label: 'Fee (₹)' },
+  { key: 'date', label: 'Date', type: 'date', required: true },
+  { key: 'time', label: 'Time', type: 'time', required: true },
+  { key: 'venue', label: 'Venue', required: true },
+  { key: 'teamSize', label: 'Max team size', type: 'number', min: 1, step: 1, required: true },
+  { key: 'fee', label: 'Fee (₹)', type: 'number', min: 0, step: '0.01', required: true },
   { key: 'prize', label: 'Prize' },
-  { key: 'registrationDeadline', label: 'Registration deadline (YYYY-MM-DD)' },
+  { key: 'registrationDeadline', label: 'Registration deadline', type: 'date' },
 ];
 
 async function renderAdmin() {
@@ -86,18 +86,20 @@ function openEventForm(eventId) {
     .join('');
 
   const fieldInputs = EVENT_FORM_FIELDS.map((field) => `
-    <label>${field.label}</label>
-    <input id="event-${field.key}" value="${escapeHtml(event[field.key] || '')}">`).join('');
+    <label for="event-${field.key}">${field.label}</label>
+    <input id="event-${field.key}" type="${field.type || 'text'}" ${field.min !== undefined ? `min="${field.min}"` : ''} ${field.step ? `step="${field.step}"` : ''} ${field.required ? 'required' : ''} value="${escapeHtml(event[field.key] ?? '')}">`).join('');
 
   $('#modal').innerHTML = `
     <div class="modal">
       <div class="panel">
         <h3>${eventId ? 'Edit' : 'Add'} Event</h3>
-        <label>Category</label>
-        <select id="event-category">${categoryOptions}</select>
-        ${fieldInputs}
-        <button class="btn" data-action="save-event" data-id="${eventId || ''}">Save</button>
-        <button class="btn ghost" data-action="close-modal">Cancel</button>
+        <form data-form="event" data-event-id="${eventId || ''}">
+          <label for="event-category">Category</label>
+          <select id="event-category" required>${categoryOptions}</select>
+          ${fieldInputs}
+          <button class="btn" type="submit">Save</button>
+          <button class="btn ghost" type="button" data-action="close-modal">Cancel</button>
+        </form>
       </div>
     </div>`;
 }

@@ -249,6 +249,26 @@ function renderLogin() {
           <button class="btn big">Login</button>
         </form>
         <p class="subtitle" style="margin: 18px 0 0">Do not have an account? <a class="link" href="#/signup">Create Account</a></p>
+        <p class="subtitle">Administrator? <a class="link" href="#/admin-login">Admin Login</a></p>
+      </div>
+    </div>`;
+}
+
+function renderAdminLogin() {
+  return `
+    <div class="auth-wrap">
+      <div class="grid-floor"></div>
+      <div class="panel auth">
+        <h2 class="heading small">ADMIN LOGIN</h2>
+        <p class="subtitle">Sign in with your administrator account to manage events and registrations.</p>
+        <form data-form="admin-login">
+          <label for="admin-login-email">Email</label>
+          <input id="admin-login-email" name="email" type="email" autocomplete="username" required>
+          <label for="admin-login-password">Password</label>
+          <input id="admin-login-password" name="password" type="password" autocomplete="current-password" required>
+          <button class="btn big">Login as Admin</button>
+        </form>
+        <p class="subtitle" style="margin: 18px 0 0"><a class="link" href="#/login">Back to user login</a></p>
       </div>
     </div>`;
 }
